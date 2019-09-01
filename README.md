@@ -20,29 +20,34 @@ tomar datos de lo eficaz que es nuestro programa.
 
 ## Planeación
 **Semana del 11 al 17 de agosto**
-• Instalar el software necesario para llevar a cabo el proyecto.
-• Sentar alguna de las bases para nuestro compilador.
+
+- Instalar el software necesario para llevar a cabo el proyecto.
+- Sentar alguna de las bases para nuestro compilador.
 
 **Semana del 18 al 24 de agosto**
-• Concretar el plan de desarrollo del proyecto para la 1° entrega.
-• Dividir por bloques de manera adecuada nuestro compilador (System Arquitect).
-• Conocer mejor los detalles que integrara el compilador.
+
+- Concretar el plan de desarrollo del proyecto para la 1° entrega.
+- Dividir por bloques de manera adecuada nuestro compilador (System Arquitect).
+- Conocer mejor los detalles que integrara el compilador.
 
 **Semana del 25 al 31 de agosto**
-• Planificar la forma adecuada de llevar el proyecto con el fin de poder integrar la parte dos del programa (System Integrator).
-• Planificar e idear pruebas para comprobar la primera parte de nuestro compilador (Tester).
-• Comprobar que la forma en que se está planeado es adecuada y de acuerdo a lo solicitado por el profesor (Proyect Manager).
+
+- Planificar la forma adecuada de llevar el proyecto con el fin de poder integrar la parte dos del programa (System Integrator).
+- Planificar e idear pruebas para comprobar la primera parte de nuestro compilador (Tester).
+- Comprobar que la forma en que se está planeado es adecuada y de acuerdo a lo solicitado por el profesor (Proyect Manager).
 
 **Semana del 1 al 7 de Septiembre**
-• Programar en Elixir con el formato adecuado para cumplir con los requerimientos solicitados.
-• Asegurarse de que se esté llevando a cabo para la arquitectura indicada, así como para el sistema operativo. (System Architect).
-• Verificar que la modulación del programa es eficaz de tal manera que permita su mejora e innovación posterior (System Integrator).
-• Contar con los casos de prueba bien estructurados y detallados (Tester).
-• Corroborar con el profesor si se están cumpliendo los requerimientos o si se necesita corregir (Proyect Manager).
+
+- Programar en Elixir con el formato adecuado para cumplir con los requerimientos solicitados.
+- Asegurarse de que se esté llevando a cabo para la arquitectura indicada, así como para el sistema operativo. (System Architect).
+- Verificar que la modulación del programa es eficaz de tal manera que permita su mejora e innovación posterior (System Integrator).
+- Contar con los casos de prueba bien estructurados y detallados (Tester).
+- Corroborar con el profesor si se están cumpliendo los requerimientos o si se necesita corregir (Proyect Manager).
 
 **Semana del 8 al 13 de Septiembre**
-• Verificar el funcionamiento correcto de cada una de las partes de nuestro proyecto (System Integrator).
-• Comprobar y documentar el por qué sí se está llevando a cabo para la arquitectura y sistema operativo deseado (System Archiect).
-• Aplicar las pruebas para cada uno de los módulos y de manera conjunta (Tester).
-• Cuantificar que tan eficaz es nuestro programa hasta el momento (Tester)
-• Verificar que se ha cumplido con cada uno de los requerimientos del proyecto, así como las diferentes versiones del programa en Github (Proyect Manager).
+
+- Verificar el funcionamiento correcto de cada una de las partes de nuestro proyecto (System Integrator).
+- Comprobar y documentar el por qué sí se está llevando a cabo para la arquitectura y sistema operativo deseado (System Archiect).
+- Aplicar las pruebas para cada uno de los módulos y de manera conjunta (Tester).
+- Cuantificar que tan eficaz es nuestro programa hasta el momento (Tester)
+- Verificar que se ha cumplido con cada uno de los requerimientos del proyecto, así como las diferentes versiones del programa en Github (Proyect Manager).
