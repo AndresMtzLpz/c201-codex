@@ -1,4 +1,3 @@
- -1,21 +1,25 @@
 ### Objetivo de cada uno de los integrantes
 # Objetivo de cada uno de los integrantes
 -	Project Manager
@@ -36,7 +35,6 @@ tomar datos de lo eficaz que es nuestro programa.
 **Semana del 11 al 17 de agosto**
 -	Instalar el software necesario para llevar a cabo el proyecto.
 -	Sentar alguna de las bases para nuestro compilador.
-@@ -43,3 +47,4 @@
 -	Aplicar las pruebas para cada uno de los módulos y de manera conjunta (Tester).
 -	Cuantificar que tan eficaz es nuestro programa hasta el momento (Tester)
 -	Verificar que se ha cumplido con cada uno de los requerimientos del proyecto, así como las diferentes versiones del programa en Github (Proyect Manager).
