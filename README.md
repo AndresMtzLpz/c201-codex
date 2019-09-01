@@ -1,5 +1,6 @@
 # Objetivo de cada uno de los integrantes
--	Project Manager
+-	Project Manager 
+
 Administrar y planear los tiempos de entrega y avance del proyecto, unificar la forma de trabajar para garantizar el crecimiento 
 del proyecto con cada una de las entregas.
 -	System Architect
