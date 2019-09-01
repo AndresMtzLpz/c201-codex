@@ -1,4 +1,3 @@
-### Objetivo de cada uno de los integrantes
 # Objetivo de cada uno de los integrantes
 -	Project Manager
     Administrar y planear los tiempos de entrega y avance del proyecto, unificar la forma de trabajar para garantizar el crecimiento 
@@ -28,8 +27,6 @@ sin necesidad de cambiar todo.
 Planear e implementar pruebas con las cuales se pueda verificar el resultado de nuestro proyecto, probar casos que impliquen 
 el fallo del compilador y cuando se pruebe un caso exitoso, los cuales en este caso será una función de retorno de un número entero,
 tomar datos de lo eficaz que es nuestro programa.
-
-### Planeación
 
 ## Planeación
 **Semana del 11 al 17 de agosto**
