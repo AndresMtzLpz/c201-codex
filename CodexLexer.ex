@@ -1,11 +1,16 @@
 defmodule Codex do
 
+  def lexear(lexico) do
+	num_lines = 1
+	lexer(lexico,num_lines)
+  end
+
   #Se definen algunos tipos y se esepecifica la devolución de la función
   @type str_token :: {String.t(), tuple}
   @spec lexer(String.t(), integer) :: list
 
-  def lexer(lexico, num_lines) do
-
+  def lexer(lexico,num_lines) do
+	
     # Se crea una lista de keywords
     keywords = keywords()
 
@@ -48,9 +53,11 @@ defmodule Codex do
                 [{a, num_lines, []} | lexer(String.replace_leading(lexico, str, ""), num_lines)]
             end
 
+		  # Si no coincide con ninguno se realiza el default (string)
+
           Regex.match?(ident_re, lexico) ->
             id = List.first(Regex.run(ident_re, lexico, [{:capture, :first}]))
-            token = {:ident, num_lines, [id]}
+            token = {:string, num_lines, [id]}
             [token | lexer(Regex.replace(ident_re, lexico, "", global: false), num_lines)]
 
           true ->
@@ -59,26 +66,31 @@ defmodule Codex do
     end
   end
 
+
   # Se muestra la representación de los token
   def show_token(token) do
     case token do
       # Numeros
       {:num, a} -> to_string(a)
 
-      # Identificadores
-      {:ident, nameOfIdent} ->  nameOfIdent
+      # String
+      {:string, a} -> a
 
       # Tipo "int"
-      {:type, :int} -> "int"
+      {:type, :intKeyWord} -> "int "
 
       # Tipo return
-      {:type, :return} -> "return"
+      {:ident, :returnKeyWord} -> "return "
+
+	  # Tipo return
+      {:ident, :mainKeyWord} -> "main"
+
 
       # Syntax de llaves y parentesis
-      {:lcurly} -> "{"
-      {:rcurly} -> "}"
-      {:lbracket} -> "("
-      {:rbracket} -> ")"
+      {:lBrace} -> "{"
+      {:rBrace} -> "}"
+      {:lParen} -> "("
+      {:rParen} -> ")"
       {:semicolon} -> ";"
     end
   end
@@ -87,12 +99,13 @@ defmodule Codex do
   @spec keywords() :: [str_token]
   defp keywords() do
     tokens = [
-      {:type, :int},
-      {:type, :return},
-      {:lcurly},
-      {:rcurly},
-      {:lbracket},
-      {:rbracket},
+      {:type, :intKeyWord},
+      {:ident, :returnKeyWord},
+	  {:ident, :mainKeyWord},
+      {:lBrace},
+      {:rBrace},
+      {:lParen},
+      {:rParen},
       {:semicolon}
     ]
 
