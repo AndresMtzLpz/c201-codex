@@ -3,16 +3,23 @@ defmodule CODEX do
   Documentation for CODEX.
   """
 
-  @doc """
-  Hello world.
+  @commands %{
+      "help" => "Prints this help",
+      "a" =>"Another option"
+  }
 
-  ## Examples
 
-      iex> CODEX.hello()
-      :world
+    def help do
+      IO.puts("\CODEX --help file_name \n")
 
-  """
-  def hello do
-    :world
-  end
+      IO.puts("\nThe compiler supports following options:\n")
+
+      @commands
+      |> Enum.map(fn {command, description} -> IO.puts("  #{command} - #{description}") end)
+    end 
+
+    defp process_args({[help: true], _, _}) do
+      help()
+    end
+  
 end
