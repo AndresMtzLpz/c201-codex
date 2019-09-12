@@ -17,6 +17,7 @@ defmodule Parser do
 	end
 	
   end
+#-------------Obtiene el siguiente token ---------- 
 
   def siguiente(listaTokensF) do
 	  primero = Tuple.to_list(hd listaTokensF)
@@ -54,18 +55,15 @@ defmodule Parser do
 			  listaTokensF = List.delete_at(listaTokensF,0)
 			  nextToken = siguiente(listaTokensF)
               statement = parse_statement(nextToken,listaTokensF)
-
-              case statement do
-               nextToken ->
-				listaTokensF = List.delete_at(listaTokensF,0)
-				listaTokensF = List.delete_at(listaTokensF,0)
+			
+			  case statement do
+               {statement, listaTokensF} ->
 				listaTokensF = List.delete_at(listaTokensF,0)
 				nextToken = siguiente(listaTokensF)
+
                   if nextToken == :rBrace do
 					listaTokensF = List.delete_at(listaTokensF,0)
-			  		
-                    {%Arbol{nodopadre: :funcion, valor: :main, hijoIzq: nextToken},listaTokensF}
-					#"Todo Bien"
+                    {%Arbol{nodopadre: :funcion, valor: :main, hijoIzq: statement},listaTokensF}
 
                   else
                     {:error, "Error, Corchete faltante "}
@@ -96,13 +94,12 @@ defmodule Parser do
       nextToken = siguiente(listaTokensF)
       expression = parse_expression(nextToken,listaTokensF)
 
-      case nextToken do
-		nextToken->
+      case expression do
+		{expression,listaTokensF} ->
 		listaTokensF = List.delete_at(listaTokensF,0)
-        nextToken = siguiente(listaTokensF)
-
+      	nextToken = siguiente(listaTokensF)
           if nextToken == :semicolon do
-            {%Arbol{nodopadre: :return, hijoIzq: nextToken},listaTokensF}
+            {%Arbol{nodopadre: :statement, valor: :return,hijoIzq: expression},listaTokensF}
 					
           end
       end
@@ -113,8 +110,8 @@ defmodule Parser do
 
 #----------------PARSER EXPRESSION--------------------
   def parse_expression(nextToken,listaTokensF) do
-    case nextToken do
-      _-> {%Arbol{nodopadre: :constant, valor: nextToken}, listaTokensF}
+	case nextToken do
+      _-> {%Arbol{nodopadre: :constant, valor: nextToken},listaTokensF}
 		
 	end
 
