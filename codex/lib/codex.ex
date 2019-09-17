@@ -31,7 +31,6 @@ defmodule Principal do
 
     def e do
       IO.puts("\Genera codigo ensamblador\n")
-      IO.puts("\Genera Arbol\n")
       lista=Codex.lexear(File.read!("valueZero.c"))
       arbol=Parser.parse_program(lista)
       GENERADOR.generate_code(arbol)
