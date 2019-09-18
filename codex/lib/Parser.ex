@@ -8,11 +8,14 @@ defmodule Parser do
     funcion = parse_function(prueba,listaTokensF)
 
 	case funcion do
+      {{:error, error_message}, _listaTokensF} ->
+        {:error, error_message}
+
       {function_node, listaTokensF} ->
         if listaTokensF == [] do
           %Arbol{nodopadre: :program, hijoIzq: function_node}
         else
-          IO.puts("Error: Hay mas elementos al finalizar la funcion.")
+          {:error,"Error: Hay mas elementos al finalizar la funcion."}
         end
 	end
 	
@@ -24,8 +27,13 @@ defmodule Parser do
 	  prueba = List.first(primero)
 
 	  if prueba == :ident || prueba == :type || prueba == :num do
-		primero = Tuple.to_list(hd listaTokensF)
-	  	List.last(List.last(primero))
+		
+	  	if prueba == :num do
+			List.last(primero)
+		else
+			primero = Tuple.to_list(hd listaTokensF)
+	  		List.last(List.last(primero))
+		end
 		
 	  else
 		primero = Tuple.to_list(hd listaTokensF)
@@ -57,6 +65,9 @@ defmodule Parser do
               statement = parse_statement(nextToken,listaTokensF)
 			
 			  case statement do
+                {{:error, error_message}, listaTokensF} ->
+                  {{:error, error_message}, listaTokensF}
+
                {statement, listaTokensF} ->
 				listaTokensF = List.delete_at(listaTokensF,0)
 				nextToken = siguiente(listaTokensF)
@@ -66,7 +77,7 @@ defmodule Parser do
                     {%Arbol{nodopadre: :funcion, valor: :main, hijoIzq: statement},listaTokensF}
 
                   else
-                    {:error, "Error, Corchete faltante "}
+                    {:error, "Error, Corchete faltante ", listaTokensF}
                   end
               end
 
@@ -95,11 +106,16 @@ defmodule Parser do
       expression = parse_expression(nextToken,listaTokensF)
 
       case expression do
+		  {{:error, error_message}, listaTokensF} ->
+          {{:error, error_message}, listaTokensF}
+
 		{expression,listaTokensF} ->
 		listaTokensF = List.delete_at(listaTokensF,0)
       	nextToken = siguiente(listaTokensF)
           if nextToken == :semicolon do
             {%Arbol{nodopadre: :statement, valor: :return,hijoIzq: expression},listaTokensF}
+          else
+            {{:error, "Error: semicolon missed after constant to finish return statement"}, listaTokensF}
 					
           end
       end
@@ -111,8 +127,8 @@ defmodule Parser do
 #----------------PARSER EXPRESSION--------------------
   def parse_expression(nextToken,listaTokensF) do
 	case nextToken do
-      _-> {%Arbol{nodopadre: :constant, valor: nextToken},listaTokensF}
-		
+      _ -> {%Arbol{nodopadre: :constant, valor: nextToken},listaTokensF}
+	#	_ -> {{:error, "Error: constant value missed"}, listaTokensF}
 	end
 
   end
