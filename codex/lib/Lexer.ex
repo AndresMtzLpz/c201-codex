@@ -1,4 +1,4 @@
-defmodule Codex do
+defmodule Lexer do
 
   def lexear(lexico) do
 	num_lines = 1
@@ -32,10 +32,10 @@ defmodule Codex do
         lexer(Regex.replace(newline_re, lexico, "", global: false), num_lines + 1)
 
       Regex.match?(number_re, lexico) ->
-        num = String.to_integer(List.first(Regex.run(number_re, lexico, [{:capture, :first}])))
+        num = String.to_integer(List.first(Regex.run(number_re, lexico)))
 
         [
-          {:num, num_lines, [num]}
+          {:num, num_lines, num}
           | lexer(Regex.replace(number_re, lexico, "", global: false), num_lines)
         ]
 
