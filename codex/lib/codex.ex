@@ -52,7 +52,7 @@ defmodule CODEX do
     File.read!(path)
     |> Lexer.lexear()
     |> Parser.parse_program()
-    |> GENERADOR.generate_code()
+    |> GENERADOR.generador_codigo()
     |> Linker.generate_binary(path)    
     end
 
