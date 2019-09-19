@@ -113,7 +113,7 @@ defmodule LexerTest do
               {:lParen, 3, []},
               {:rParen, 3, []},
               {:lBrace, 3, []},
-              {:string, 5, ["return"]},
+              {:ident, 5, [:returnKeyWord]},
               {:semicolon, 5, []},
               {:rBrace, 7, []}
             ]
