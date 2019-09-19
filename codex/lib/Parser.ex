@@ -133,12 +133,12 @@ defmodule Parser do
 	{{:error, error_message}, listaTokensF}
 
       _ -> 
-		listaTokensF = List.delete_at(listaTokensF,0)
-      	nextToken = siguiente(listaTokensF)
+
 		if nextToken == :semicolon do
-		        {%Arbol{nodopadre: :constant, valor: nextToken},listaTokensF}
+				{{:error, "Error: Falta valor de la constante"}, listaTokensF}
+		        
 		else
-		       {{:error, "Error: Falta valor de la constante"}, listaTokensF}
+		       {%Arbol{nodopadre: :constant, valor: nextToken},listaTokensF}
 						
 		end
 	
