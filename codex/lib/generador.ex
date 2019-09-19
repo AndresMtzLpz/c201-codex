@@ -1,8 +1,8 @@
 defmodule GENERADOR do
   def generate_code(arbol) do
-	code = post_order(arbol)
-	  IO.puts("\nCode Generator output:")
-	IO.puts(code)
+	post_order(arbol)
+	  #IO.puts("\nCode Generator output:")
+	#IO.puts(code)
 
   end
 
