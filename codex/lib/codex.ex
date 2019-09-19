@@ -2,21 +2,14 @@ defmodule CODEX do
   @moduledoc """
   Documentation for CODEX.
   """
-  @commands %{
-      "h" => "Muestra ayuda para la ejecución del compilador",
-      "t" =>"Muestra lista tokens",
-      "a" => "Genera arbol AST",
-      "s" => "Genera el codigo fuente del ensamblador",
-      "o" => "Especifica el nombre del ejecutable de nuestro compilador"
-  }
     def main (args) do
 
      case args do
       ["-h"] -> help() |> IO.puts();
-      ["-t"] -> t(); 
-      ["-a"] -> a();
-      ["-s"] -> s();
-	  ["-o"] -> o();
+      ["-t", path] -> t(path); 
+      ["-a", path] -> a(path);
+      ["-s", path] -> s(path);
+	  ["-o", path] -> o(path);
       _ -> show_error(1) |> IO.puts;
            show_error(1)
     end 
@@ -32,37 +25,35 @@ defmodule CODEX do
     "
     end
 
-    def t() do
-      #IO.puts("\LISTA DE TOKENS \n")
-      lista=Lexer.lexear(File.read!("test/multi_digit.c"))
-      IO.inspect(lista)
+    def t(path) do
+      IO.puts("\LISTA DE TOKENS \n")
+      Lexer.lexear(File.read!(path))
+      |>IO.inspect()
     end
 
-    def a() do
-      IO.puts("\Genera Arbol\n")
-      lista=Lexer.lexear(File.read!("test/multi_digit.c"))
-      arbol=Parser.parse_program(lista)
-      IO.inspect(arbol)
+    def a(path) do
+      IO.puts("\ARBOL AST\n")
+      Lexer.lexear(File.read!(path))
+      |>Parser.parse_program()
+      |>IO.inspect()
     end
 
-    def s() do
-      IO.puts("\Genera codigo ensamblador\n")
-      IO.puts("\Genera Arbol\n")
-      lista=Lexer.lexear(File.read!("test/multi_digit.c"))
-      arbol=Parser.parse_program(lista)
-      IO.inspect(GENERADOR.generate_code(arbol))
+    def s(path) do
+      IO.puts("\CODIGO ENSAMBLADOR\n")
+      Lexer.lexear(File.read!(path))
+      |>Parser.parse_program()
+      |>GENERADOR.generate_code()
+      |>IO.inspect()
 	  
     end
 	    
-	def o() do
-	file_path = "test/return_2.c"
-    IO.puts("Compiling file: " <> file_path)
-    #assembly_path = String.replace_trailing(file_path, ".c", ".s")
-    File.read!(file_path)
+	def o(path) do
+    IO.puts("Compilando archivo: " <> path)
+    File.read!(path)
     |> Lexer.lexear()
     |> Parser.parse_program()
     |> GENERADOR.generate_code()
-    |> Linker.generate_binary(file_path)    
+    |> Linker.generate_binary(path)    
     end
 
     def show_error(num) do
