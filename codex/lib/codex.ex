@@ -16,6 +16,7 @@ defmodule CODEX do
       ["-t"] -> t(); 
       ["-a"] -> a();
       ["-s"] -> s();
+	  ["-o"] -> o();
       _ -> show_error(1) |> IO.puts;
            show_error(1)
     end 
@@ -27,18 +28,19 @@ defmodule CODEX do
     -t      Muestra en pantalla la lista de tokens.
     -a      Muestra el Árbol Sintáctico Abstracto.
     -s      Genera el código fuente del ensamblador (x86).
+	-o		Compila el programa .c genera el ejecutable
     "
     end
 
     def t() do
       #IO.puts("\LISTA DE TOKENS \n")
-      lista=Lexer.lexear(File.read!("multi_digit.c"))
+      lista=Lexer.lexear(File.read!("test/multi_digit.c"))
       IO.inspect(lista)
     end
 
     def a() do
       IO.puts("\Genera Arbol\n")
-      lista=Lexer.lexear(File.read!("multi_digit.c"))
+      lista=Lexer.lexear(File.read!("test/multi_digit.c"))
       arbol=Parser.parse_program(lista)
       IO.inspect(arbol)
     end
@@ -46,10 +48,23 @@ defmodule CODEX do
     def s() do
       IO.puts("\Genera codigo ensamblador\n")
       IO.puts("\Genera Arbol\n")
-      lista=Lexer.lexear(File.read!("multi_digit.c"))
+      lista=Lexer.lexear(File.read!("test/multi_digit.c"))
       arbol=Parser.parse_program(lista)
-      GENERADOR.generate_code(arbol)
+      IO.inspect(GENERADOR.generate_code(arbol))
+	  
     end
+	    
+	def o() do
+	file_path = "test/return_2.c"
+    IO.puts("Compiling file: " <> file_path)
+    #assembly_path = String.replace_trailing(file_path, ".c", ".s")
+    File.read!(file_path)
+    |> Lexer.lexear()
+    |> Parser.parse_program()
+    |> GENERADOR.generate_code()
+    |> Linker.generate_binary(file_path)    
+    end
+
     def show_error(num) do
       case num do
        1 -> "Compilador de C de Codex. Escriba -h para la ayuda." #no se puso argumento
