@@ -146,5 +146,4 @@ defmodule Parser do
 	end
 
   end
-
 end
