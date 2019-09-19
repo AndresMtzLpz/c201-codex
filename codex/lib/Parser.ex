@@ -126,9 +126,10 @@ defmodule Parser do
 
 #----------------PARSER EXPRESSION--------------------
   def parse_expression(nextToken,listaTokensF) do
+
 	case nextToken do
       _ -> {%Arbol{nodopadre: :constant, valor: nextToken},listaTokensF}
-	#	_ -> {{:error, "Error: constant value missed"}, listaTokensF}
+		{{:error, error_message}, listaTokensF} -> {{:error, "Error: constant value missed"}, listaTokensF}
 	end
 
   end
