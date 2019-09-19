@@ -29,7 +29,7 @@ defmodule ParserTest do
 
   test "Wrong Case" do
     arbol= Lexer.lexear(File.read!("test/WrongCase.c")) 
-    assert Parser.parse_program(arbol) == {:error, "Error: Hay mas elementos al finalizar la funcion."}
+    assert Parser.parse_program(arbol) == {:error, "Error: Falta la Llave return"}
 :ok
   end
   test "falta parentesis" do
@@ -39,12 +39,12 @@ defmodule ParserTest do
   end
   test "falta valor retorno" do
     arbol= Lexer.lexear(File.read!("test/missingRetVal.c")) 
-    assert Parser.parse_program(arbol) == {:error, "Error: Hay mas elementos al finalizar la funcion."}
+    assert Parser.parse_program(arbol) == {:error, "Error: Falta valor de la constante"}
 :ok
   end
   test "sin espacios" do
     arbol= Lexer.lexear(File.read!("test/nSpace.c")) 
-    assert Parser.parse_program(arbol) == {:error, "Error: Hay mas elementos al finalizar la funcion."}
+    assert Parser.parse_program(arbol) == {:error, "Error: Falta la Llave return"}
 :ok
   end
 
