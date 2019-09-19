@@ -110,26 +110,39 @@ defmodule Parser do
           {{:error, error_message}, listaTokensF}
 
 		{expression,listaTokensF} ->
+
 		listaTokensF = List.delete_at(listaTokensF,0)
       	nextToken = siguiente(listaTokensF)
           if nextToken == :semicolon do
             {%Arbol{nodopadre: :statement, valor: :return,hijoIzq: expression},listaTokensF}
           else
-            {{:error, "Error: semicolon missed after constant to finish return statement"}, listaTokensF}
+            {{:error, "Error: semicolon faltante despues de la constante"}, listaTokensF}
 					
           end
       end
-
+	else
+		{{:error, "Error: Falta la Llave return"}, listaTokensF}
 
     end
   end
 
 #----------------PARSER EXPRESSION--------------------
   def parse_expression(nextToken,listaTokensF) do
-
 	case nextToken do
-      _ -> {%Arbol{nodopadre: :constant, valor: nextToken},listaTokensF}
-		{{:error, error_message}, listaTokensF} -> {{:error, "Error: constant value missed"}, listaTokensF}
+	{{:error, error_message}, listaTokensF} -> 
+	{{:error, error_message}, listaTokensF}
+
+      _ -> 
+		listaTokensF = List.delete_at(listaTokensF,0)
+      	nextToken = siguiente(listaTokensF)
+		if nextToken == :semicolon do
+		        {%Arbol{nodopadre: :constant, valor: nextToken},listaTokensF}
+		else
+		       {{:error, "Error: Falta valor de la constante"}, listaTokensF}
+						
+		end
+	
+
 	end
 
   end
