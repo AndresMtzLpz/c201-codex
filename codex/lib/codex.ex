@@ -15,8 +15,8 @@ defmodule CODEX do
     end 
   end
     def help() do
-    IO.puts("\CODEX Ayuda")
-    IO.puts("\nOpciones del compilador:\n")
+    #IO.puts("\CODEX Ayuda")
+    #IO.puts("\nOpciones del compilador:\n")
     "
     -t      Muestra en pantalla la lista de tokens.
     -a      Muestra el Árbol Sintáctico Abstracto.
@@ -26,29 +26,29 @@ defmodule CODEX do
     end
 
     def t(path) do
-      IO.puts("\LISTA DE TOKENS \n")
+      #IO.puts("\LISTA DE TOKENS \n")
       Lexer.lexear(File.read!(path))
       |>IO.inspect()
     end
 
     def a(path) do
-      IO.puts("\ARBOL AST\n")
+      #IO.puts("\ARBOL AST\n")
       Lexer.lexear(File.read!(path))
       |>Parser.parse_program()
       |>IO.inspect()
     end
 
     def s(path) do
-      IO.puts("\CODIGO ENSAMBLADOR\n")
+      #IO.puts("\CODIGO ENSAMBLADOR\n")
       Lexer.lexear(File.read!(path))
       |>Parser.parse_program()
       |>GENERADOR.generate_code()
-      |>IO.inspect()
+      |>IO.puts()
 	  
     end
 	    
 	def o(path) do
-    IO.puts("Compilando archivo: " <> path)
+    #IO.puts("Compilando archivo: " <> path)
     File.read!(path)
     |> Lexer.lexear()
     |> Parser.parse_program()
