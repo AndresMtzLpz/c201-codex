@@ -9,37 +9,40 @@ defmodule CODEX do
       ["-t", path] -> t(path); 
       ["-a", path] -> a(path);
       ["-s", path] -> s(path);
-	  ["-o", path] -> o(path);
+	  ["-c", path] -> c(path);
+	  ["-o", path,newPath] -> o(path,newPath);
       _ -> show_error(1) |> IO.puts;
            show_error(1)
     end 
   end
     def help() do
-    #IO.puts("\CODEX Ayuda")
-    #IO.puts("\nOpciones del compilador:\n")
+    IO.puts("\CODEX Ayuda")
+    IO.puts("\nOpciones del compilador:\n")
     "
-    -t      Muestra en pantalla la lista de tokens.
-    -a      Muestra el Árbol Sintáctico Abstracto.
-    -s      Genera el código fuente del ensamblador (x86).
-	-o		Compila el programa .c genera el ejecutable
+    -t [Path]            Muestra en pantalla la lista de tokens.
+    -a [Path]            Muestra el Árbol Sintáctico Abstracto.
+    -s [Path]            Genera el código fuente del ensamblador (x86).
+    -c [Path]            Compila el programa .c genera el ejecutable.
+    -o [Path] [NewName]  Compila el programa .c genera el ejecutable con nuevo nombre.
+
     "
     end
 
     def t(path) do
-      #IO.puts("\LISTA DE TOKENS \n")
+      IO.puts("\LISTA DE TOKENS \n")
       Lexer.lexear(File.read!(path))
       |>IO.inspect()
     end
 
     def a(path) do
-      #IO.puts("\ARBOL AST\n")
+      IO.puts("\ARBOL AST\n")
       Lexer.lexear(File.read!(path))
       |>Parser.parse_program()
       |>IO.inspect()
     end
 
     def s(path) do
-      #IO.puts("\CODIGO ENSAMBLADOR\n")
+      IO.puts("\CODIGO ENSAMBLADOR\n")
       Lexer.lexear(File.read!(path))
       |>Parser.parse_program()
       |>GENERADOR.generate_code()
@@ -47,13 +50,24 @@ defmodule CODEX do
 	  
     end
 	    
-	def o(path) do
-    #IO.puts("Compilando archivo: " <> path)
+	def c(path) do
+    IO.puts("Compilando archivo: " <> path)
     File.read!(path)
     |> Lexer.lexear()
     |> Parser.parse_program()
     |> GENERADOR.generate_code()
     |> Linker.generate_binary(path)    
+    end
+	
+	
+	def o(path,newPath) do
+    IO.puts("Compilando archivo: " <> path)
+	IO.puts("Generando archivos con el nuevo nombre: " <> newPath)
+    File.read!(path)
+    |> Lexer.lexear()
+    |> Parser.parse_program()
+    |> GENERADOR.generate_code()
+    |> Linker.generate_new_binary(path,newPath)    
     end
 
     def show_error(num) do
