@@ -1,6 +1,6 @@
 defmodule GENERADOR do
   def generate_code(arbol) do
-	code = post_order(arbol)
+	post_order(arbol)
   end
 
   def post_order(node) do
