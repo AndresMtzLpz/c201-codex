@@ -86,12 +86,15 @@ defmodule Lexer do
       {:ident, :mainKeyWord} -> "main"
 
 
-      # Syntax de llaves y parentesis
+      # Syntax de llaves, parentesis y unarios
       {:lBrace} -> "{"
       {:rBrace} -> "}"
       {:lParen} -> "("
       {:rParen} -> ")"
       {:semicolon} -> ";"
+      {:negation} -> "-"
+      {:logicalNeg} -> "!"
+      {:bitWise} -> "~"
     end
   end
 
@@ -101,12 +104,15 @@ defmodule Lexer do
     tokens = [
       {:type, :intKeyWord},
       {:ident, :returnKeyWord},
-	  {:ident, :mainKeyWord},
+      {:ident, :mainKeyWord},
       {:lBrace},
       {:rBrace},
       {:lParen},
       {:rParen},
-      {:semicolon}
+      {:semicolon},
+      {:negation},
+      {:logicalNeg},
+      {:bitWise}
     ]
 
     token_to_map = fn a -> {show_token(a), a} end
@@ -125,6 +131,4 @@ defmodule Lexer do
       end
     end)
   end
-
-
 end
