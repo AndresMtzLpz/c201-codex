@@ -3,7 +3,11 @@ defmodule LexerTest do
   doctest Lexer
 
   test "multi_digit" do
-    assert Lexer.lexear(File.read!("test/multi_digit.c")) == 
+    assert Lexer.lexear("int main() {
+    return 100;
+}
+
+") == 
    [
               {:type, 1, [:intKeyWord]},
               {:ident, 1, [:mainKeyWord]},
@@ -18,7 +22,15 @@ defmodule LexerTest do
   end
 
   test "new lines" do
-    assert Lexer.lexear(File.read!("test/newlines.c")) == 
+    assert Lexer.lexear("int 
+main
+(   
+)
+{
+return 
+0
+;
+}") == 
     [
               {:type, 1, [:intKeyWord]},
               {:ident, 3, [:mainKeyWord]},
@@ -33,7 +45,9 @@ defmodule LexerTest do
   end
 
   test "return 0" do
-    assert Lexer.lexear(File.read!("test/valueZero.c")) == 
+    assert Lexer.lexear("int main() {
+    return 0;
+}") == 
     [
               {:type, 1, [:intKeyWord]},
               {:ident, 1, [:mainKeyWord]},
@@ -48,21 +62,23 @@ defmodule LexerTest do
   end
 
   test "return 2" do
-    assert Lexer.lexear(File.read!("test/return_2.c")) ==[
-              {:type, 3, [:intKeyWord]},
-              {:ident, 3, [:mainKeyWord]},
-              {:lParen, 3, []},
-              {:rParen, 3, []},
-              {:lBrace, 3, []},
-              {:ident, 5, [:returnKeyWord]},
-              {:num, 5, 2},
-              {:semicolon, 5, []},
-              {:rBrace, 7, []}
+    assert Lexer.lexear("int main() {
+    return 2;
+}") ==[
+              {:type, 1, [:intKeyWord]},
+              {:ident, 1, [:mainKeyWord]},
+              {:lParen, 1, []},
+              {:rParen, 1, []},
+              {:lBrace, 1, []},
+              {:ident, 3, [:returnKeyWord]},
+              {:num, 3, 2},
+              {:semicolon, 3, []},
+              {:rBrace, 5, []}
             ]
   end
 
   test "con espacios" do
-    assert Lexer.lexear(File.read!("test/wSpaces.c")) == 
+    assert Lexer.lexear("int   main    (  )  {   return  0 ; }") == 
     [
               {:type, 1, [:intKeyWord]},
               {:ident, 1, [:mainKeyWord]},
@@ -77,7 +93,9 @@ defmodule LexerTest do
   end
 
   test "falta parentesis" do
-    assert Lexer.lexear(File.read!("test/missingPar.c")) == 
+    assert Lexer.lexear("int main( {
+    return 0;
+}") == 
     [
               {:type, 1, [:intKeyWord]},
               {:ident, 1, [:mainKeyWord]},
@@ -90,7 +108,7 @@ defmodule LexerTest do
             ]
   end
   test "una linea" do
-    assert Lexer.lexear(File.read!("test/oneline.c")) == 
+    assert Lexer.lexear("int main(){return 0;}") == 
     [
               {:type, 1, [:intKeyWord]},
               {:ident, 1, [:mainKeyWord]},
@@ -106,21 +124,24 @@ defmodule LexerTest do
 
 
   test "falta valor retorno" do
-    assert Lexer.lexear(File.read!("test/missingRetVal.c")) == 
+    assert Lexer.lexear("int main() {
+    return ;
+}") == 
     [
-              {:type, 3, [:intKeyWord]},
-              {:ident, 3, [:mainKeyWord]},
-              {:lParen, 3, []},
-              {:rParen, 3, []},
-              {:lBrace, 3, []},
-              {:ident, 5, [:returnKeyWord]},
-              {:semicolon, 5, []},
-              {:rBrace, 7, []}
+              {:type, 1, [:intKeyWord]},
+              {:ident, 1, [:mainKeyWord]},
+              {:lParen, 1, []},
+              {:rParen, 1, []},
+              {:lBrace, 1, []},
+              {:ident, 3, [:returnKeyWord]},
+              {:semicolon, 3, []},
+              {:rBrace, 5, []}
             ]
   end
 
   test "no brace" do
-    assert Lexer.lexear(File.read!("test/noBrace.c")) == 
+    assert Lexer.lexear("int main {
+    return 0;") == 
     [
               {:type, 1, [:intKeyWord]},
               {:ident, 1, [:mainKeyWord]},
@@ -132,7 +153,9 @@ defmodule LexerTest do
   end
 
   test "no semicolon" do
-    assert Lexer.lexear(File.read!("test/noSemicolon.c")) == 
+    assert Lexer.lexear("int main {
+    return 0
+}") == 
     [
               {:type, 1, [:intKeyWord]},
               {:ident, 1, [:mainKeyWord]},
@@ -144,22 +167,26 @@ defmodule LexerTest do
   end
 
   test "sin espacio" do
-    assert Lexer.lexear(File.read!("test/nSpace.c")) == 
+    assert Lexer.lexear("int main() {
+    return0;
+}") == 
     [
-  {:type, 3, [:intKeyWord]},
-  {:ident, 3, [:mainKeyWord]},
-  {:lParen, 3, []},
-  {:rParen, 3, []},
-  {:lBrace, 3, []},
-  {:string, 5, ["return0"]},
-  {:semicolon, 5, []},
-  {:rBrace, 7, []}
-  ]
+              {:type, 1, [:intKeyWord]},
+              {:ident, 1, [:mainKeyWord]},
+              {:lParen, 1, []},
+              {:rParen, 1, []},
+              {:lBrace, 1, []},
+              {:string, 3, ["return0"]},
+              {:semicolon, 3, []},
+              {:rBrace, 5, []}
+            ]
 
   end
 
   test "wrong case" do
-    assert Lexer.lexear(File.read!("test/WrongCase.c")) == 
+    assert Lexer.lexear("int main() {
+    RETURN 0;
+}") == 
     [
               {:type, 1, [:intKeyWord]},
               {:ident, 1, [:mainKeyWord]},
