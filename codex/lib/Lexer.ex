@@ -18,7 +18,7 @@ defmodule Lexer do
     ident_re = ~r(^[a-zA-Z]\w*)
     number_re = ~r(^[0-9]+)
     space_re = ~r(^[ \h]+)
-    newline_re = ~r(^[\n\\|\r\n])
+    newline_re = ~r(^[\n\\|\r\n]\n*)
 
     cond do
       lexico == "" ->
