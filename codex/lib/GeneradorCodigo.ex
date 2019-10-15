@@ -13,8 +13,7 @@ defmodule GENERADOR do
         #code_snippet = post_order(anode.hijoIzq)
         #emit_code(anode.nodopadre, code_snippet, anode.valor)
     #end
-    with nill <- node,
-	     {:nodopadre,:valor,:hijoIzq,:hijoder} <- node, 
+    with {:nodopadre,:valor,:hijoIzq,:hijoder} <- node, 
 	     do:
 	     	code_snippet = post_orden(node.hijoIzq)	
 	    	emit_code(node.nodopadre, cide_snippet, node.valor)
