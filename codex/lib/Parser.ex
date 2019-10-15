@@ -6,10 +6,11 @@ defmodule Parser do
 	prueba = siguiente(listaTokens)
 	listaTokensF = List.delete_at(listaTokens,0)
     funcion = parse_function(prueba,listaTokensF)
-
+	
 	case funcion do
       {{:error, error_message}, _listaTokensF} ->
         {:error, error_message}
+
 
       {function_node, listaTokensF} ->
         if listaTokensF == [] do
@@ -117,6 +118,7 @@ defmodule Parser do
             {%Arbol{nodopadre: :statement, valor: :return,hijoIzq: expression},listaTokensF}
           else
             {{:error, "Error: semicolon faltante despues de la constante"}, listaTokensF}
+			inspect(listaTokensF)
 					
           end
       end
@@ -128,22 +130,84 @@ defmodule Parser do
 
 #----------------PARSER EXPRESSION--------------------
   def parse_expression(nextToken,listaTokensF) do
-	case nextToken do
+
+	unaries =parse_unaries(nextToken,listaTokensF)
+
+	case unaries do
 	{{:error, error_message}, listaTokensF} -> 
 	{{:error, error_message}, listaTokensF}
 
-      _ -> 
+    
+	{unaries,listaTokensF}->
 
-		if nextToken == :semicolon do
-				{{:error, "Error: Falta valor de la constante"}, listaTokensF}
-		        
-		else
-		       {%Arbol{nodopadre: :constant, valor: nextToken},listaTokensF}
-						
+		listaTokensF = List.delete_at(listaTokensF,0)
+      	nextToken = siguiente(listaTokensF)
+
+		if nextToken != 3 do
+				parse_expression(nextToken,listaTokensF)
+				listaTokensF = List.delete_at(listaTokensF,0)
+				{%Arbol{nodopadre: :unary, valor: nextToken,hijoIzq: unaries},listaTokensF}
+				
+				
+
+		else   
+			{%Arbol{nodopadre: :constant, valor: nextToken,hijoIzq: unaries},listaTokensF}
+			##{{:error, "Error: Falta valor de la constante"}, listaTokensF}
+				
+				
+
 		end
 	
 
 	end
 
   end
+
+
+#----------------PARSER OUNARY---------------
+  def parse_unaries(nextToken,listaTokensF) do
+
+	with  nextToken <- :negation,
+		  nextToken <- :logicalNeg
+	do  
+		{%Arbol{nodopadre: :unary, valor: nextToken},listaTokensF}
+		##parse_expression(nextToken,listaTokensF)
+	
+	else
+		_-> {{:error, "Error: Falta unario"}, listaTokensF}
+		
+	end
+
+
+##
+	##case nextToken do
+	##{{:error, error_message}, listaTokensF} -> 
+	##{{:error, error_message}, listaTokensF}
+
+  ##  :negation -> 
+	##	parse_expression(nextToken,listaTokensF) 
+	##	{%Arbol{nodopadre: :unary_negation, valor: nextToken},listaTokensF}
+		
+	##:logicalNeg ->
+	##	parse_expression(nextToken,listaTokensF) 
+	##	{%Arbol{nodopadre: :unary_logicalneg, valor: nextToken},listaTokensF}
+		
+	##:bitWise ->
+	##	parse_expression(nextToken,listaTokensF) 
+	##	{%Arbol{nodopadre: :unary_complement, valor: nextToken},listaTokensF}
+	##_ ->
+	##	{{:error, "Error: Falta unario"}, listaTokensF}
+	##
+	##end
+
+
+  
+end
+
+
+
+
+
+
+
 end
