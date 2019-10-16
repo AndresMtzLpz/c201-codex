@@ -5,18 +5,14 @@ defmodule GENERADOR do
 
   def post_order(node) do
 	#IO.inspect(node)
-    #case node do
-  	#nil ->
-        #nil
+    case node do
+  	nil ->
+        nil
 
-      #anode ->
-        #code_snippet = post_order(anode.hijoIzq)
-        #emit_code(anode.nodopadre, code_snippet, anode.valor)
-    #end
-    with {:nodopadre,:valor,:hijoIzq,:hijoder} <- node, 
-	     do:
-	     	code_snippet = post_orden(node.hijoIzq)	
-	    	emit_code(node.nodopadre, cide_snippet, node.valor)
+      anode ->
+        code_snippet = post_order(anode.hijoIzq)
+        emit_code(anode.nodopadre, code_snippet, anode.valor)
+    end
   end
 def emit_code(:program, code_snippet, _) do
     """
