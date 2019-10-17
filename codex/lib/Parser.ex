@@ -188,7 +188,7 @@ defmodule Parser do
 		nextToken = siguiente(listaTokensF)
 		{arbol,fin} = parse_expression(nextToken,listaTokensF)
 
-		{%Arbol{nodopadre: :unary_complement, valor: :bitWise,hijoIzq: pelo},fin}
+		{%Arbol{nodopadre: :unary_complement, valor: :bitWise,hijoIzq: arbol},fin}
 
 	 nextToken->
 		listaTokensF = List.delete_at(listaTokensF,0)
