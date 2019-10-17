@@ -40,9 +40,6 @@ defmodule CODEX do
 
     def a(path) do
       IO.puts("\ARBOL AST\n")
-      #Lexer.lexear(File.read!(path))
-      #|>Parser.parse_program()
-      #|>IO.inspect()
       with tokens <- Lexer.lexear(File.read!(path)),
 	   arbol <-  Parser.parse_program() 
       do
@@ -55,10 +52,6 @@ defmodule CODEX do
 
     def s(path) do
       IO.puts("\CODIGO ENSAMBLADOR\n")
-      #Lexer.lexear(File.read!(path))
-      #|>Parser.parse_program()
-      #|>GENERADOR.generate_code()
-      #|>IO.puts()
       with tokens <- Lexer.lexear(File.read!(path)),
 	   arbol <-  Parser.parse_program(),
 	   ensamblador <- GENERADOR.generate_code() 
@@ -72,12 +65,7 @@ defmodule CODEX do
     end
 	    
     def c(path) do
-      IO.puts("Compilando archivo: " <> path)
-      #File.read!(path)
-      #|> Lexer.lexear()
-      #|> Parser.parse_program()
-      #|> GENERADOR.generate_code()
-      #|> Linker.generate_binary(path) 
+      IO.puts("Compilando archivo: " <> path) 
       with camino <- File.read!(path),
 	   tokens <- Lexer.lexear(camino),
 	   arbol <-  Parser.parse_program(),
@@ -93,12 +81,7 @@ defmodule CODEX do
 	
     def o(path,newPath) do
       IO.puts("Compilando archivo: " <> path)
-      IO.puts("Generando archivos con el nuevo nombre: " <> newPath)
-      #File.read!(path)
-      #|> Lexer.lexear()
-      #|> Parser.parse_program()
-      #|> GENERADOR.generate_code()
-      #|> Linker.generate_new_binary(path,newPath)    
+      IO.puts("Generando archivos con el nuevo nombre: " <> newPath)   
       with camino <- File.read!(path),
 	   tokens <- Lexer.lexear(camino),
 	   arbol <-  Parser.parse_program(),
