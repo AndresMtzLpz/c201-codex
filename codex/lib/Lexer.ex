@@ -82,9 +82,13 @@ defmodule Lexer do
       # Tipo return
       {:ident, :returnKeyWord} -> "return "
 
-	  # Tipo return
+	  # Tipo main
       {:ident, :mainKeyWord} -> "main"
-
+	  
+	  #Tipos unarios	
+	  {:unary, :negation} -> "-"
+      {:unary, :logicalNeg} -> "!"
+      {:unary, :bitWise} -> "~"
 
       # Syntax de llaves, parentesis y unarios
       {:lBrace} -> "{"
@@ -92,9 +96,6 @@ defmodule Lexer do
       {:lParen} -> "("
       {:rParen} -> ")"
       {:semicolon} -> ";"
-      {:negation} -> "-"
-      {:logicalNeg} -> "!"
-      {:bitWise} -> "~"
     end
   end
 
@@ -110,9 +111,9 @@ defmodule Lexer do
       {:lParen},
       {:rParen},
       {:semicolon},
-      {:negation},
-      {:logicalNeg},
-      {:bitWise}
+	  {:unary, :negation},
+      {:unary, :logicalNeg},
+      {:unary, :bitWise}
     ]
 
     token_to_map = fn a -> {show_token(a), a} end

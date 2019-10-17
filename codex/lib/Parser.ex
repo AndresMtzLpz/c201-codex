@@ -6,10 +6,11 @@ defmodule Parser do
 	prueba = siguiente(listaTokens)
 	listaTokensF = List.delete_at(listaTokens,0)
     funcion = parse_function(prueba,listaTokensF)
-
+	
 	case funcion do
       {{:error, error_message}, _listaTokensF} ->
         {:error, error_message}
+
 
       {function_node, listaTokensF} ->
         if listaTokensF == [] do
@@ -104,19 +105,21 @@ defmodule Parser do
 	  listaTokensF = List.delete_at(listaTokensF,0)
       nextToken = siguiente(listaTokensF)
       expression = parse_expression(nextToken,listaTokensF)
-
-      case expression do
+      
+		case expression do
 		  {{:error, error_message}, listaTokensF} ->
           {{:error, error_message}, listaTokensF}
 
 		{expression,listaTokensF} ->
 
-		listaTokensF = List.delete_at(listaTokensF,0)
+		
       	nextToken = siguiente(listaTokensF)
+
           if nextToken == :semicolon do
             {%Arbol{nodopadre: :statement, valor: :return,hijoIzq: expression},listaTokensF}
           else
             {{:error, "Error: semicolon faltante despues de la constante"}, listaTokensF}
+			
 					
           end
       end
@@ -128,22 +131,81 @@ defmodule Parser do
 
 #----------------PARSER EXPRESSION--------------------
   def parse_expression(nextToken,listaTokensF) do
-	case nextToken do
+	
+	unaries =parse_unaries(nextToken,listaTokensF)
+	nextToken = siguiente(listaTokensF) 
+
+	case unaries do
 	{{:error, error_message}, listaTokensF} -> 
 	{{:error, error_message}, listaTokensF}
 
-      _ -> 
+    
+	{unaries,listaTokensF}->
 
 		if nextToken == :semicolon do
-				{{:error, "Error: Falta valor de la constante"}, listaTokensF}
-		        
+			{{:error, "Error: Falta valor de la constante"}, listaTokensF}
 		else
-		       {%Arbol{nodopadre: :constant, valor: nextToken},listaTokensF}
-						
+			if nextToken ==  :unary do
+				{unaries,listaTokensF}			
+			else   
+		       {%Arbol{nodopadre: :constant, valor: nextToken},listaTokensF}	
+			end		
 		end
-	
-
+		
 	end
 
   end
+
+
+#----------------PARSER OUNARY---------------
+  def parse_unaries(nextToken,listaTokensF) do
+
+	nextToken = siguiente(listaTokensF)
+	primero = Tuple.to_list(hd listaTokensF)
+	prueba = List.last(primero)
+
+	case {nextToken,prueba} do
+	{{:error, error_message}, listaTokensF} -> 
+	{{:error, error_message}, listaTokensF}
+
+    {:unary,[:negation]} -> 
+		listaTokensF = List.delete_at(listaTokensF,0)
+		nextToken = siguiente(listaTokensF)		
+		{arbol,fin} = parse_expression(nextToken,listaTokensF)	
+	
+		{%Arbol{nodopadre: :unary_negation, valor: :negation,hijoIzq: arbol},fin}
+
+	{:unary,[:logicalNeg]} ->
+		listaTokensF = List.delete_at(listaTokensF,0)
+		nextToken = siguiente(listaTokensF)
+		{arbol,fin}= parse_expression(nextToken,listaTokensF)
+
+		{%Arbol{nodopadre: :unary_logicalneg, valor: :logicalNeg,hijoIzq: arbol},fin}
+
+
+	{:unary,[:bitWise]}->
+		listaTokensF = List.delete_at(listaTokensF,0)
+		nextToken = siguiente(listaTokensF)
+		{arbol,fin} = parse_expression(nextToken,listaTokensF)
+
+		{%Arbol{nodopadre: :unary_complement, valor: :bitWise,hijoIzq: arbol},fin}
+
+	 nextToken->
+		listaTokensF = List.delete_at(listaTokensF,0)
+		primero = Tuple.to_list(nextToken)
+		numero = List.last(primero)
+
+		{numero,listaTokensF}
+	
+	end
+
+  
+end
+
+
+
+
+
+
+
 end

@@ -29,16 +29,44 @@ def emit_code(:program, code_snippet, _) do
     _main:                    ## @main
     """ <>
       code_snippet
+	<>
+    """
+        ret
+    """
   end
 
   def emit_code(:statement, code_snippet, :return) do
     """
         movl    #{code_snippet}, %eax
-        ret
+    """
+  end
+  
+  def emit_code(:unary, code_snippet, :negation) do
+    code_snippet 
+	<>
+    """
+
+        neg    %eax
+    """ 
+  end
+
+  def emit_code(:unary, code_snippet, :logicalNeg) do
+    code_snippet
+	<>
+    """
+        not    %eax
+    """
+  end
+  
+  def emit_code(:unary, code_snippet, :bitWise) do
+    code_snippet
+	<>
+    """
+        not    %eax
     """
   end
 
   def emit_code(:constant, _code_snippet, valor) do
     "$#{valor}"
-end
+  end
 end
