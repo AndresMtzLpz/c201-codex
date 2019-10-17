@@ -185,20 +185,20 @@ nextToken = siguiente(listaTokensF)
 	{{:error, error_message}, listaTokensF} -> 
 	{{:error, error_message}, listaTokensF}
 
-    {:unario,[:negation]} -> 
+    {:unary,[:negation]} -> 
 		#parse_expression(nextToken,listaTokensF)
 		listaTokensF = List.delete_at(listaTokensF,0)
     	nextToken = siguiente(listaTokensF) 
 		{%Arbol{nodopadre: :unary_negation, valor: locos},listaTokensF}
 
-	{:unario,[:logicalNeg]} ->
+	{:unary,[:logicalNeg]} ->
 		#parse_expression(nextToken,listaTokensF) 
 		listaTokensF = List.delete_at(listaTokensF,0)
     	nextToken = siguiente(listaTokensF)
 		{%Arbol{nodopadre: :unary_logicalneg, valor: locos},listaTokensF}
 
 
-	{:unario,[:bitWise]}->
+	{:unary,[:bitWise]}->
 		listaTokensF = List.delete_at(listaTokensF,0)
     	nextToken = siguiente(listaTokensF)
 		{%Arbol{nodopadre: :unary_complement, valor: locos},listaTokensF}
