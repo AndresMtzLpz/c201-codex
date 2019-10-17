@@ -24,57 +24,98 @@ defmodule CODEX do
     -s [Path]            Genera el código fuente del ensamblador (x86).
     -c [Path]            Compila el programa .c genera el ejecutable.
     -o [Path] [NewName]  Compila el programa .c genera el ejecutable con nuevo nombre.
-
     "
     end
 
     def t(path) do
       IO.puts("\LISTA DE TOKENS \n")
-      Lexer.lexear(File.read!(path))
-      |>IO.inspect()
+      with tokens <- Lexer.lexear(File.read!(path)) 
+      do
+      	IO.inspect(tokens)
+      else
+	:error ->
+	    {:error, "Error al generar la lista de tokens"}
+      end
     end
 
     def a(path) do
       IO.puts("\ARBOL AST\n")
-      Lexer.lexear(File.read!(path))
-      |>Parser.parse_program()
-      |>IO.inspect()
+      #Lexer.lexear(File.read!(path))
+      #|>Parser.parse_program()
+      #|>IO.inspect()
+      with tokens <- Lexer.lexear(File.read!(path)),
+	   arbol <-  Parser.parse_program() 
+      do
+      		IO.inspect(arbol)
+      else
+	:error ->
+	    {:error, "Error al generar el arbol"}
+      end
     end
 
     def s(path) do
       IO.puts("\CODIGO ENSAMBLADOR\n")
-      Lexer.lexear(File.read!(path))
-      |>Parser.parse_program()
-      |>GENERADOR.generate_code()
-      |>IO.puts()
+      #Lexer.lexear(File.read!(path))
+      #|>Parser.parse_program()
+      #|>GENERADOR.generate_code()
+      #|>IO.puts()
+      with tokens <- Lexer.lexear(File.read!(path)),
+	   arbol <-  Parser.parse_program(),
+	   ensamblador <- GENERADOR.generate_code() 
+      do
+      		IO.puts(ensamblador)
+      else
+	:error ->
+	    {:error, "Error al generar el ensamblador"}
+      end
 	  
     end
 	    
-	def c(path) do
-    IO.puts("Compilando archivo: " <> path)
-    File.read!(path)
-    |> Lexer.lexear()
-    |> Parser.parse_program()
-    |> GENERADOR.generate_code()
-    |> Linker.generate_binary(path)    
+    def c(path) do
+      IO.puts("Compilando archivo: " <> path)
+      #File.read!(path)
+      #|> Lexer.lexear()
+      #|> Parser.parse_program()
+      #|> GENERADOR.generate_code()
+      #|> Linker.generate_binary(path) 
+      with camino <- File.read!(path),
+	   tokens <- Lexer.lexear(camino),
+	   arbol <-  Parser.parse_program(),
+	   ensamblador <- GENERADOR.generate_code() 
+      do
+      		Linker.generate_binary(ensamblador, path) 
+      else
+	:error ->
+	    {:error, "Error al compilar"}
+      end   
     end
 	
 	
-	def o(path,newPath) do
-    IO.puts("Compilando archivo: " <> path)
-	IO.puts("Generando archivos con el nuevo nombre: " <> newPath)
-    File.read!(path)
-    |> Lexer.lexear()
-    |> Parser.parse_program()
-    |> GENERADOR.generate_code()
-    |> Linker.generate_new_binary(path,newPath)    
+    def o(path,newPath) do
+      IO.puts("Compilando archivo: " <> path)
+      IO.puts("Generando archivos con el nuevo nombre: " <> newPath)
+      #File.read!(path)
+      #|> Lexer.lexear()
+      #|> Parser.parse_program()
+      #|> GENERADOR.generate_code()
+      #|> Linker.generate_new_binary(path,newPath)    
+      with camino <- File.read!(path),
+	   tokens <- Lexer.lexear(camino),
+	   arbol <-  Parser.parse_program(),
+	   ensamblador <- GENERADOR.generate_code() 
+      do
+      		Linker.generate_new_binary(ensamblador,path,newPath)  
+      else
+	:error ->
+	    {:error, "Error al compilar con el nuevo nombre"}
+      end
     end
 
     def show_error(num) do
       case num do
-       1 -> "Compilador de C de Codex. Escriba -h para la ayuda." #no se puso argumento
-       2 -> "Comando(s) no válido. Escriba -h para la ayuda." #mensaje de error
-       3 -> "Archivo inválido o no existe en el directorio." #mensaje de archivo inválido
+      1 -> "Compilador de C de Codex. Escriba -h para la ayuda." #no se puso argumento
+      2 -> "Comando(s) no válido. Escriba -h para la ayuda." #mensaje de error
+      3 -> "Archivo inválido o no existe en el directorio." #mensaje de archivo inválido
       end
     end
 end
