@@ -105,7 +105,6 @@ defmodule Parser do
 	  listaTokensF = List.delete_at(listaTokensF,0)
       nextToken = siguiente(listaTokensF)
       expression = parse_expression(nextToken,listaTokensF)
-		#IO.inspect(expression)
       
 		case expression do
 		  {{:error, error_message}, listaTokensF} ->
@@ -113,13 +112,14 @@ defmodule Parser do
 
 		{expression,listaTokensF} ->
 
-		listaTokensF = List.delete_at(listaTokensF,0)
+		
       	nextToken = siguiente(listaTokensF)
+
           if nextToken == :semicolon do
             {%Arbol{nodopadre: :statement, valor: :return,hijoIzq: expression},listaTokensF}
           else
             {{:error, "Error: semicolon faltante despues de la constante"}, listaTokensF}
-			inspect(listaTokensF)
+			
 					
           end
       end
@@ -132,11 +132,9 @@ defmodule Parser do
 #----------------PARSER EXPRESSION--------------------
   def parse_expression(nextToken,listaTokensF) do
 	
-	#IO.inspect(nextToken)
 	unaries =parse_unaries(nextToken,listaTokensF)
-nextToken = siguiente(listaTokensF) 
-		#IO.inspect(unaries)
-		IO.inspect(nextToken)
+	nextToken = siguiente(listaTokensF) 
+
 	case unaries do
 	{{:error, error_message}, listaTokensF} -> 
 	{{:error, error_message}, listaTokensF}
@@ -144,30 +142,16 @@ nextToken = siguiente(listaTokensF)
     
 	{unaries,listaTokensF}->
 
-		
-		IO.inspect(nextToken)
-		if nextToken ==  :unary do
-				#IO.inspect(unaries)
-				{%Arbol{nodopadre: :unario	, valor: nextToken,hijoIzq: unaries},listaTokensF}
-
-		else   
-			#IO.inspect(unaries)
-			{%Arbol{nodopadre: :unario	, valor: nextToken,hijoIzq: unaries},listaTokensF}
-			##{{:error, "Error: Falta valor de la constante"}, listaTokensF}
-				
-				
-
-		end
-	unaries->
 		if nextToken == :semicolon do
-				{{:error, "Error: Falta valor de la constante"}, listaTokensF}
-		        
+			{{:error, "Error: Falta valor de la constante"}, listaTokensF}
 		else
-		       {%Arbol{nodopadre: :constant, valor: nextToken},listaTokensF}
-						
+			if nextToken ==  :unary do
+				{unaries,listaTokensF}			
+			else   
+		       {%Arbol{nodopadre: :constant, valor: nextToken},listaTokensF}	
+			end		
 		end
-	
-
+		
 	end
 
   end
@@ -175,35 +159,43 @@ nextToken = siguiente(listaTokensF)
 
 #----------------PARSER OUNARY---------------
   def parse_unaries(nextToken,listaTokensF) do
-	locos=nextToken;
-nextToken = siguiente(listaTokensF)
-	  primero = Tuple.to_list(hd listaTokensF)
-	  prueba = List.last(primero)
 
-#IO.inspect(prueba)
+	nextToken = siguiente(listaTokensF)
+	primero = Tuple.to_list(hd listaTokensF)
+	prueba = List.last(primero)
+
 	case {nextToken,prueba} do
 	{{:error, error_message}, listaTokensF} -> 
 	{{:error, error_message}, listaTokensF}
 
     {:unary,[:negation]} -> 
-		#parse_expression(nextToken,listaTokensF)
 		listaTokensF = List.delete_at(listaTokensF,0)
-    	nextToken = siguiente(listaTokensF) 
-		{%Arbol{nodopadre: :unary_negation, valor: locos},listaTokensF}
+		nextToken = siguiente(listaTokensF)		
+		{arbol,fin} = parse_expression(nextToken,listaTokensF)	
+	
+		{%Arbol{nodopadre: :unary_negation, valor: :negation,hijoIzq: arbol},fin}
 
 	{:unary,[:logicalNeg]} ->
-		#parse_expression(nextToken,listaTokensF) 
 		listaTokensF = List.delete_at(listaTokensF,0)
-    	nextToken = siguiente(listaTokensF)
-		{%Arbol{nodopadre: :unary_logicalneg, valor: locos},listaTokensF}
+		nextToken = siguiente(listaTokensF)
+		{arbol,fin}= parse_expression(nextToken,listaTokensF)
+
+		{%Arbol{nodopadre: :unary_logicalneg, valor: :logicalNeg,hijoIzq: arbol},fin}
 
 
 	{:unary,[:bitWise]}->
 		listaTokensF = List.delete_at(listaTokensF,0)
-    	nextToken = siguiente(listaTokensF)
-		{%Arbol{nodopadre: :unary_complement, valor: locos},listaTokensF}
-	_ ->
-		locos
+		nextToken = siguiente(listaTokensF)
+		{arbol,fin} = parse_expression(nextToken,listaTokensF)
+
+		{%Arbol{nodopadre: :unary_complement, valor: :bitWise,hijoIzq: pelo},fin}
+
+	 nextToken->
+		listaTokensF = List.delete_at(listaTokensF,0)
+		primero = Tuple.to_list(nextToken)
+		numero = List.last(primero)
+
+		{numero,listaTokensF}
 	
 	end
 
