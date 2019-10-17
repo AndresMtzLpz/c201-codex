@@ -1,4 +1,4 @@
-https://raw.githubusercontent.com/hiphoox/c201-codex/Test/codex-Documentation/codex.png
+ ![Codex](https://github.com/hiphoox/c201-codex/blob/Test/codex-Documentation/codex.png)
 # Equipo - Codex
 
 ## Integrantes
